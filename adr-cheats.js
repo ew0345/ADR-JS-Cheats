@@ -35,6 +35,9 @@
 *   Numpad .: 110
 *   Numpad /: 111
 *
+* Things that work but are glitchy/will cause lots of errors
+*   setting interval for Ship Upgrades: reinforceButton.click() & engineButton.click()
+*   setting interval for buying the Scout Maps: buyMap.click()
 * Additional Note: Change 'var amount' to the amount of resource you want. For max amount you can use $SM.MAX_STORE as the amount.
 * Bug: Doesn't seem to add beyond the initial added amount for some resources and weapons. Not sure why.
 * Bug: Interface doesn't update when setting HP, Rucksack space, adding things to rucksack etc until you do something to update the interface.
@@ -81,53 +84,44 @@ for (var i = 0; i < 11; i++) {
     buttons[i] = document.createElement('button');
 }
 
+var barStyle = document.createElement('style');
+barStyle.rel="stylesheet";
+barStyle.innerHTML="#cm{text-align:center;} #cm.button{cursor: pointer;}";
 
 cm.innerHTML = "--Cheat Menu-- ";
 cm.id = "cm";
-cm.style="text-align: center;"
 
 buttons[0].innerHTML = "Auto Stoke";
-buttons[0].style = "cursor: pointer;";
 buttons[0].addEventListener('click', ADR_Stoke);
 
 buttons[1].innerHTML = "Auto Gather";
-buttons[1].style = "cursor: pointer;";
 buttons[1].addEventListener('click', ADR_Gather);
 
 buttons[2].innerHTML = "Auto Check";
-buttons[2].style = "cursor: pointer;";
 buttons[2].addEventListener('click', ADR_Check);
 
 buttons[3].innerHTML = "Resources";
-buttons[3].style = "cursor: pointer;";
 buttons[3].addEventListener('click', ADR_Resources);
 
 buttons[4].innerHTML = "Weapons";
-buttons[4].style = "cursor: pointer;";
 buttons[4].addEventListener('click', ADR_Weapons);
 
 buttons[5].innerHTML = "All Perks";
-buttons[5].style = "cursor: pointer;";
 buttons[5].addEventListener('click', ADR_AllPerks);
 
 buttons[6].innerHTML = "No Water/Food Use";
-buttons[6].style = "cursor: pointer;";
 buttons[6].addEventListener('click', ADR_NoWaterFood);
 
 buttons[7].innerHTML = "More Health from Food/Meds";
-buttons[7].style = "cursor: pointer;";
 buttons[7].addEventListener('click', ADR_HighHealing);
 
 buttons[8].innerHTML = "More Base HP";
-buttons[8].style = "cursor: pointer;";
 buttons[8].addEventListener('click', ADR_LotsOfHP);
 
 buttons[9].innerHTML = "More Base Bag Space";
-buttons[9].style = "cursor: pointer;";
 buttons[9].addEventListener('click', ADR_Storage);
 
 buttons[10].innerHTML = "Reset Death Cooldown";
-buttons[10].style = "cursor: pointer;";
 buttons[10].addEventListener('click', ADR_DeathCooldown);
 
 function ADR_Stoke() {
@@ -298,14 +292,15 @@ window.onkeydown = function (e) {
 };
 
 function appendStuff() {
-    $('body').prepend(cm);
+    document.body.prepend(cm);
 
     for (var i = 0; i < buttons.length; i++) {
-        $('#cm').append(buttons[i]);
+        document.getElementById("cm").appendChild(buttons[i]);
     }
 
-    $('#cm').append(bar);
-    $('body').prepend(bar2);
+    document.getElementById("cm").appendChild(bar);
+    document.body.prepend(bar2);
+    document.body.prepend(barStyle);
 }
 
 ListOfKeys();
