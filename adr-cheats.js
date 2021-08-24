@@ -3,7 +3,7 @@
 // @namespace ew0345
 // @author Ew0345
 // @description Javascript based cheats for A Dark Room
-// @version 2.3
+// @version 2.4
 // @homepage https://youtube.com/user/ew0345
 // @icon https://i.imgur.com/iRck696.png
 // @match http://adarkroom.doublespeakgames.com/
@@ -25,6 +25,7 @@
 *   2.1 - Put the stuff being appended into it's own function as well as changed the buttons to be append through an array and a for-statement
 *   2.2 - Added some checking to Stoke, Gather and Check which should stop any errors from not having things unlocked.
 *   2.3 - Auto Stoke/Light, Gather and Check are now toggles. Activating it once will enabled it and activating it again will disable it.
+*   2.4 - Minor change to how buttons are created. This won't affect the user at all, just for the sake slightly condensing the code.
 *
 * Keycode List:
 *   Numpad 0 - 9: 96-105
@@ -34,9 +35,6 @@
 *   Numpad .: 110
 *   Numpad /: 111
 *
-* Things that work but are glitchy/will cause lots of errors
-*   setting interval for Ship Upgrades: reinforceButton.click() & engineButton.click()
-*   setting interval for buying the Scout Maps: buyMap.click()
 * Additional Note: Change 'var amount' to the amount of resource you want. For max amount you can use $SM.MAX_STORE as the amount.
 * Bug: Doesn't seem to add beyond the initial added amount for some resources and weapons. Not sure why.
 * Bug: Interface doesn't update when setting HP, Rucksack space, adding things to rucksack etc until you do something to update the interface.
@@ -76,65 +74,61 @@ var stokeInterval, gatherInterval, trapInterval, buildtrapInterval;
 var cm = document.createElement('div');
 var bar = document.createElement('hr');
 var bar2 = document.createElement('hr');
-var btn1 = document.createElement('button');
-var btn2 = document.createElement('button');
-var btn3 = document.createElement('button');
-var btn4 = document.createElement('button');
-var btn5 = document.createElement('button');
-var btn6 = document.createElement('button');
-var btn7 = document.createElement('button');
-var btn8 = document.createElement('button');
-var btn9 = document.createElement('button');
-var btn10 = document.createElement('button');
-var btn11 = document.createElement('button');
+
+var buttons = [];
+
+for (var i = 0; i < 11; i++) {
+    buttons[i] = document.createElement('button');
+}
+
 
 cm.innerHTML = "--Cheat Menu-- ";
 cm.id = "cm";
 cm.style="text-align: center;"
 
-btn1.innerHTML = "Auto Stoke";
-btn1.style = "cursor: pointer;";
-btn1.addEventListener('click', ADR_Stoke);
+buttons[0].innerHTML = "Auto Stoke";
+buttons[0].style = "cursor: pointer;";
+buttons[0].addEventListener('click', ADR_Stoke);
 
-btn2.innerHTML = "Auto Gather";
-btn2.style = "cursor: pointer;";
-btn2.addEventListener('click', ADR_Gather);
+buttons[1].innerHTML = "Auto Gather";
+buttons[1].style = "cursor: pointer;";
+buttons[1].addEventListener('click', ADR_Gather);
 
-btn3.innerHTML = "Auto Check";
-btn3.style = "cursor: pointer;";
-btn3.addEventListener('click', ADR_Check);
+buttons[2].innerHTML = "Auto Check";
+buttons[2].style = "cursor: pointer;";
+buttons[2].addEventListener('click', ADR_Check);
 
-btn4.innerHTML = "Resources";
-btn4.style = "cursor: pointer;";
-btn4.addEventListener('click', ADR_Resources);
+buttons[3].innerHTML = "Resources";
+buttons[3].style = "cursor: pointer;";
+buttons[3].addEventListener('click', ADR_Resources);
 
-btn5.innerHTML = "Weapons";
-btn5.style = "cursor: pointer;";
-btn5.addEventListener('click', ADR_Weapons);
+buttons[4].innerHTML = "Weapons";
+buttons[4].style = "cursor: pointer;";
+buttons[4].addEventListener('click', ADR_Weapons);
 
-btn6.innerHTML = "All Perks";
-btn6.style = "cursor: pointer;";
-btn6.addEventListener('click', ADR_AllPerks);
+buttons[5].innerHTML = "All Perks";
+buttons[5].style = "cursor: pointer;";
+buttons[5].addEventListener('click', ADR_AllPerks);
 
-btn7.innerHTML = "No Water/Food Use";
-btn7.style = "cursor: pointer;";
-btn7.addEventListener('click', ADR_NoWaterFood);
+buttons[6].innerHTML = "No Water/Food Use";
+buttons[6].style = "cursor: pointer;";
+buttons[6].addEventListener('click', ADR_NoWaterFood);
 
-btn8.innerHTML = "More Health from Food/Meds";
-btn8.style = "cursor: pointer;";
-btn8.addEventListener('click', ADR_HighHealing);
+buttons[7].innerHTML = "More Health from Food/Meds";
+buttons[7].style = "cursor: pointer;";
+buttons[7].addEventListener('click', ADR_HighHealing);
 
-btn9.innerHTML = "More Base HP";
-btn9.style = "cursor: pointer;";
-btn9.addEventListener('click', ADR_LotsOfHP);
+buttons[8].innerHTML = "More Base HP";
+buttons[8].style = "cursor: pointer;";
+buttons[8].addEventListener('click', ADR_LotsOfHP);
 
-btn10.innerHTML = "More Base Bag Space";
-btn10.style = "cursor: pointer;";
-btn10.addEventListener('click', ADR_Storage);
+buttons[9].innerHTML = "More Base Bag Space";
+buttons[9].style = "cursor: pointer;";
+buttons[9].addEventListener('click', ADR_Storage);
 
-btn11.innerHTML = "Reset Death Cooldown";
-btn11.style = "cursor: pointer;";
-btn11.addEventListener('click', ADR_DeathCooldown);
+buttons[10].innerHTML = "Reset Death Cooldown";
+buttons[10].style = "cursor: pointer;";
+buttons[10].addEventListener('click', ADR_DeathCooldown);
 
 function ADR_Stoke() {
     if ($SM.get('game.fire.value') == 0) {
@@ -306,9 +300,8 @@ window.onkeydown = function (e) {
 function appendStuff() {
     $('body').prepend(cm);
 
-    var btns = [btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9,btn10,btn11];
-    for (var i = 0; i < btns.length; i++) {
-        $('#cm').append(btns[i]);
+    for (var i = 0; i < buttons.length; i++) {
+        $('#cm').append(buttons[i]);
     }
 
     $('#cm').append(bar);
