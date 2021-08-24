@@ -3,7 +3,7 @@
 // @namespace ew0345
 // @author Ew0345
 // @description Javascript based cheats for A Dark Room
-// @version 2.2
+// @version 2.3
 // @homepage https://youtube.com/user/ew0345
 // @icon https://i.imgur.com/iRck696.png
 // @match http://adarkroom.doublespeakgames.com/
@@ -12,8 +12,6 @@
 // ==/UserScript==
 
 /* 
-* Can also be found: https://greasyfork.org/en/scripts/392506-adr-cheats
-*
 * Game Link: http://adarkroom.doublespeakgames.com/
 *
 * Updates:
@@ -26,6 +24,7 @@
 *   2.0 - Added a cheat menu with buttons for the cheats. Keybinds still work in place of them if you don't want to use it
 *   2.1 - Put the stuff being appended into it's own function as well as changed the buttons to be append through an array and a for-statement
 *   2.2 - Added some checking to Stoke, Gather and Check which should stop any errors from not having things unlocked.
+*   2.3 - Auto Stoke/Light, Gather and Check are now toggles. Activating it once will enabled it and activating it again will disable it.
 *
 * Keycode List:
 *   Numpad 0 - 9: 96-105
@@ -70,6 +69,9 @@ var heal = 50000;
 var basehp = 999999;
 var bagspace = 999999;
 var medsamount = 100;
+
+var automate = [false, false, false];
+var stokeInterval, gatherInterval, trapInterval, buildtrapInterval;
 
 var cm = document.createElement('div');
 var bar = document.createElement('hr');
@@ -138,15 +140,31 @@ function ADR_Stoke() {
     if ($SM.get('game.fire.value') == 0) {
       lightButton.click();
     }
-    setInterval(function() { stokeButton.click(); }, 100);
+    
+    if (automate[0] == false) {
+        stokeInterval = setInterval(function() { stokeButton.click(); }, 100);
+        automate[0] = true;
+        Notifications.printMessage('Enabled Auto Fire Stoking');
+    } else if (automate[0] == true) {
+        clearInterval(stokeInterval);
+        automate[0] = false;
+        Notifications.printMessage('Disabled Auto Fire Stoking');
+    }
 
-    Notifications.printMessage('Enabled Auto Fire Stoking');
+   
 }
 
 function ADR_Gather() {
     if ($SM.get('stores.wood') != undefined) {
-      setInterval(function ADR_Gather() { gatherButton.click(); }, 2000);
-      Notifications.printMessage('Enabled Auto Wood Gathering');
+        if (automate[1] == false) {
+            gatherInterval = setInterval(function () { gatherButton.click(); }, 2000);
+            automate[1] = true;
+            Notifications.printMessage('Enabled Auto Wood Gathering');
+        } else if (automate[1] == true) {
+            clearInterval(gatherInterval);
+            automate[1] = false;
+            Notifications.printMessage('Disabled Auto Wood Gathering');
+        }
     } else if ($SM.get('stores.wood') == undefined) {
       Notifications.printMessage('You have not unlocked the ability to gather wood yet.');
     }
@@ -154,15 +172,22 @@ function ADR_Gather() {
 
 function ADR_Check() {
     if ($SM.get('game.buildings["trap"]', true) > 0) {
-      setInterval(function ADR_Check() { trapsButton.click(); }, 2000);
-      Notifications.printMessage('Enabled Auto Trap Checking');
-      
-      setInterval(function() {
-        while ($SM.get('game.buildings["trap"]', true) == 0) {
-          Notifications.printMessage('No traps found; Building trap.');
-          build_trap.click();
+        if (automate[2] == false) {
+            trapInterval = setInterval(function() { trapsButton.click(); }, 2000);
+            buildtrapInterval = setInterval(function() {
+                while ($SM.get('game.buildings["trap"]', true) == 0) {
+                    Notifications.printMessage('No traps found; Building trap.');
+                    build_trap.click();
+                }
+            }, 2000);
+            automate[2] = true;
+            Notifications.printMessage('Enabled Auto Trap Checking & Building');
+        } else if (automate[3] == true) {
+            clearInterval(trapInterval);
+            clearInterval(buildtrapInterval);
+            automate[3] = false;
+            Notifications.printMessage('Disabled Auto Trap Checking & Building');
         }
-      }, 2000);
     }
     if ($SM.get('game.buildings["trap"]', true) == 0 || $SM.get('game.buildings["trap"]', true) == undefined) {
       Notifications.printMessage('No traps built. Please build a trap first.');
