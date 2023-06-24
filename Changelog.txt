@@ -1,0 +1,15 @@
+Major Update, version 3.0
+
+Changes:
+- Rewrote entire script
+- Fixed bug with auto-checking/building traps
+- Added in-game event popup for certain pieces of information
+- Made Food/Water, Amount Healed, Base HP & Base Storage toggle instead of once & done
+- Added proper support for auto upgrading ship
+- Redid menu buttons to match the games appearance (both light & dark mode supported)
+
+Known Issues:
+- Anything that involving the world map will not update until something has been by the game to update the UI (HP, storage, potentially even inventory)
+
+Todo:
+- Added hotkeys for cheats back
